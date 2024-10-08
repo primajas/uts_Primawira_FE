@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/uts_Primawira_FE/static/css/main.88baab50.css",
+    "main.js": "/uts_Primawira_FE/static/js/main.fe6defd8.js",
+    "index.html": "/uts_Primawira_FE/index.html",
+    "main.88baab50.css.map": "/uts_Primawira_FE/static/css/main.88baab50.css.map",
+    "main.fe6defd8.js.map": "/uts_Primawira_FE/static/js/main.fe6defd8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.88baab50.css",
+    "static/js/main.fe6defd8.js"
+  ]
+}
