@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+#   1.User/Pembeli (Tambah, Edit, Hapus Pengguna)
+### a. Tambah Pengguna
+- Pengguna baru bisa mendaftar (sign up) dengan mengisi data seperti nama, email, password, dan alamat.
+- Backend akan memvalidasi data, lalu membuat record baru di tabel User dengan Sequelize.
+- Proses ini menyimpan data pengguna ke database dan mereturn data pengguna baru yang telah disimpan.
+### b. Edit Pengguna
+- Pengguna dapat mengedit data mereka (misalnya, mengganti nama atau alamat).
+- Prosesnya adalah mengambil data pengguna yang sudah ada, mengubah data yang diinginkan, lalu mengupdate record di tabel User.
+- Setelah update berhasil, pengguna akan menerima konfirmasi bahwa data telah diperbarui.
+### c. Hapus Pengguna
+- Admin atau pengguna dapat menghapus akun pengguna dari sistem.
+- Saat pengguna dihapus, data terkait seperti transaksi juga dapat dihapus atau tetap ada tergantung pengaturan cascade di Sequelize.
+- Record pengguna dihapus dari tabel User dan respon sukses akan diberikan.
+# Hewan (Tambah, Edit, Hapus Hewan)
+### a. Tambah Hewan
+- Admin bisa menambah hewan baru ke daftar hewan yang dijual di toko.
+- Admin mengisi data hewan seperti nama, jenis (misalnya anjing, kucing), harga, dan deskripsi.
+- Backend menerima data ini dan menyimpannya ke tabel Hewan di database.
+- Hewan yang baru ditambahkan akan muncul di halaman katalog hewan.
+### b. Edit Hewan
+- Admin bisa mengedit informasi hewan yang sudah ada, seperti mengubah harga atau deskripsi hewan.
+- Proses ini melibatkan pengambilan record hewan berdasarkan id, mengupdate informasi, dan menyimpannya kembali ke database.
+- Setelah berhasil diperbarui, informasi hewan akan ditampilkan dengan perubahan yang baru.
+### c. Hapus Hewan
+- Admin dapat menghapus hewan dari daftar toko jika hewan tersebut sudah terjual atau tidak lagi tersedia.
+- Saat menghapus, record hewan dihapus dari tabel Hewan.
+# Pakan Management (Tambah, Edit, Hapus Pakan)
+### a. Tambah Pakan
+- Admin bisa menambahkan produk pakan baru ke katalog pakan.
+- Admin mengisi data seperti nama pakan, jenis pakan (misalnya pakan kucing, anjing), harga, dan jumlah stok.
+- Backend menerima dan menyimpan data pakan baru ini ke tabel Pakan.
+### b. Edit Pakan
+- Admin bisa memperbarui informasi pakan yang sudah ada, seperti mengubah harga atau stok.
+- Proses ini melibatkan pengambilan record pakan berdasarkan id dan mengupdate informasinya.
+### c. Hapus Pakan
+- Admin dapat menghapus produk pakan dari sistem, jika pakan tidak lagi dijual atau habis.
+- Record pakan akan dihapus dari tabel Pakan.
+# Transaksi Management (Tambah, Edit, Hapus Transaksi)
+### a. Tambah Transaksi
+- Setelah pengguna memilih hewan atau pakan yang akan dibeli, mereka akan membuat transaksi.
+- Transaksi mencatat detail seperti UserId, daftar hewan yang dibeli, tanggal, dan total pembayaran.
+- Data transaksi disimpan di tabel Transaksi dan hewan yang dibeli akan terkait dengan transaksi tersebut.
+### b. Edit Transaksi
+- Admin bisa memperbarui detail transaksi, seperti menyesuaikan total pembayaran jika ada perubahan harga atau produk.
+- Prosesnya melibatkan pengambilan record transaksi berdasarkan id dan memperbarui informasinya.
+### c. Hapus Transaksi
+- Admin dapat menghapus transaksi dari sistem, biasanya jika transaksi dibatalkan atau terjadi kesalahan.
+- Record transaksi dihapus dari tabel Transaksi, dan penghapusan bisa memengaruhi record hewan yang terkait.
+## Kesimpulan
+### Setiap bagian dari sistem ini memanfaatkan Sequelize ORM untuk menangani operasi CRUD (Create, Read, Update, Delete) dengan basis data relasional. Model-model pengguna, hewan, pakan, dan transaksi saling berhubungan, sehingga memungkinkan integrasi data yang mulus antara pengguna, barang yang dibeli, dan catatan transaksi.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Data User
+<img src="../shop/src/components/asset/1.png">
 
-## Available Scripts
+## Jadi nya UserAdd
+<img src="../shop/src/components/asset/2.png">
 
-In the project directory, you can run:
+## Jadinya EditUser
+<img src="../shop/src/components/asset/3.png">
 
-### `npm start`
+## Data Hewan
+<img src="../shop/src/components/asset/4.png">
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+##  AddHewan
+<img src="../shop/src/components/asset/5.png">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## EditHewan
+<img src="../shop/src/components/asset/6.png">
 
-### `npm test`
+## Data Pakan
+<img src="../shop/src/components/asset/7.png">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## AddPakan
+<img src="../shop/src/components/asset/8.png">
 
-### `npm run build`
+## EditPakan
+<img src="../shop/src/components/asset/9.png">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Data Transaksi
+<img src="../shop/src/components/asset/10.png">
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## AddTransaksi
+<img src="../shop/src/components/asset/11.png">
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Edit Transaksi
+<img src="../shop/src/components/asset/12.png">
