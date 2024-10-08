@@ -17,7 +17,7 @@ import EditTransaksi from "./components/Transaksi.js/EditTransaksi";
 export default function App() {
   return (
     <>
-    <BrowserRouter>
+    <BrowserRouter basename="/uts_Primawira_FE/">
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/user" element={<UserList/>}/>
