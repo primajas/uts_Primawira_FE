@@ -2,44 +2,44 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-const EditUser = () => {
+const EditPembeli = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
-    getUserById();
+    getPembeliById();
   }, []);
 
-  const updateUser = async (e) => {
+  const updatePembeli = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/user/update/${id}`, {
+      await axios.put(`http://localhost:3001/pembeli/update/${id}`, {
         name,
-        email,
+        gender,
       });
-      navigate("/user"); // Navigasi kembali setelah berhasil memperbarui
+      navigate("/pembeli"); // Navigate back after successful update
     } catch (error) {
-      console.log("Error updating user:", error);
+      console.log("Error updating pembeli:", error);
     }
   };
 
-  const getUserById = async () => {
+  const getPembeliById = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/user/find/${id}`);
+      const response = await axios.get(`http://localhost:3001/pembeli/find/${id}`);
       setName(response.data.name);
-      setEmail(response.data.email);
+      setGender(response.data.gender);
     } catch (error) {
-      console.log("Error fetching user:", error);
+      console.log("Error fetching pembeli:", error);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Edit User</h2>
-        <form onSubmit={updateUser}>
+        <h2 className="text-2xl font-bold text-center mb-6">Edit Pembeli</h2>
+        <form onSubmit={updatePembeli}>
           <div className="field mb-4">
             <label className="label">Name</label>
             <div className="control">
@@ -49,21 +49,24 @@ const EditUser = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-                required 
+                required
               />
             </div>
           </div>
           <div className="field mb-4">
-            <label className="label">Email</label>
+            <label className="label">Gender</label>
             <div className="control">
-              <input
-                type="email" 
+              <select
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                required 
-              />
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
             </div>
           </div>
           <div className="field">
@@ -80,4 +83,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default EditPembeli;
