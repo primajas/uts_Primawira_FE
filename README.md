@@ -49,38 +49,8 @@
 ## Kesimpulan
 ### Setiap bagian dari sistem ini memanfaatkan Sequelize ORM untuk menangani operasi CRUD (Create, Read, Update, Delete) dengan basis data relasional. Model-model pengguna, hewan, pakan, dan transaksi saling berhubungan, sehingga memungkinkan integrasi data yang mulus antara pengguna, barang yang dibeli, dan catatan transaksi.
 
-## Data User
-<img src="../shop/src/components/asset/1.png">
 
-## Jadi nya UserAdd
-<img src="../shop/src/components/asset/2.png">
 
-## Jadinya EditUser
-<img src="../shop/src/components/asset/3.png">
+https://images.bisnis.com/posts/2023/03/12/1636532/3._kucing_anggora__ciri,_jenis,_cara_merawat,_dan_harganya_-_daily_paws.jpg
 
-## Data Hewan
-<img src="../shop/src/components/asset/4.png">
-
-##  AddHewan
-<img src="../shop/src/components/asset/5.png">
-
-## EditHewan
-<img src="../shop/src/components/asset/6.png">
-
-## Data Pakan
-<img src="../shop/src/components/asset/7.png">
-
-## AddPakan
-<img src="../shop/src/components/asset/8.png">
-
-## EditPakan
-<img src="../shop/src/components/asset/9.png">
-
-## Data Transaksi
-<img src="../shop/src/components/asset/10.png">
-
-## AddTransaksi
-<img src="../shop/src/components/asset/11.png">
-
-## Edit Transaksi
-<img src="../shop/src/components/asset/12.png">
+https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/MTA-72896052/excel_pakan_kucing_-_excel_4_kg_bentuk_ikan_makanan_kucing_anggora_persia_makanan_kucing_higienis_makanan_kucing_original_full01_021gcnr.jpg

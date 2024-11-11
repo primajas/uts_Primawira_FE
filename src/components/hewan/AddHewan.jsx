@@ -6,7 +6,8 @@ const AddHewan = () => {
   const [name, setName] = useState("");
   const [jenis, setJenis] = useState("");
   const [harga, setHarga] = useState(0);
-  const [userId, setUserId] = useState("");
+  const [gambar, setGambar] = useState(""); 
+  const [stok, setStok] = useState(0); 
   const navigate = useNavigate();
 
   const saveHewan = async (e) => {
@@ -16,7 +17,8 @@ const AddHewan = () => {
         name,
         jenis,
         harga,
-        UserId: userId, 
+        gambar, 
+        stok, 
       });
       navigate("/hewan");
     } catch (error) {
@@ -69,20 +71,36 @@ const AddHewan = () => {
             </div>
           </div>
           <div className="field mb-4">
-            <label className="label text-sm font-semibold">User ID</label>
+            <label className="label text-sm font-semibold">Stok</label>
+            <div className="control">
+              <input
+                type="number"
+                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={stok}
+                onChange={(e) => setStok(e.target.value)}
+                placeholder="Enter stok"
+                required
+              />
+            </div>
+          </div>
+          <div className="field mb-4">
+            <label className="label text-sm font-semibold">Gambar URL</label>
             <div className="control">
               <input
                 type="text"
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                placeholder="Enter User ID"
+                value={gambar}
+                onChange={(e) => setGambar(e.target.value)}
+                placeholder="Enter URL gambar"
                 required
               />
             </div>
           </div>
           <div className="field">
-            <button type="submit" className="button is-success w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition duration-300">
+            <button
+              type="submit"
+              className="button is-success w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition duration-300"
+            >
               Save
             </button>
           </div>

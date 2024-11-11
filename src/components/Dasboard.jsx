@@ -8,10 +8,7 @@ const Dasboard = () => {
         <div className="p-6 text-center text-xl font-bold border-b border-blue-700">PetShop</div>
         <ul className="mt-6">
           <li className="p-3 hover:bg-blue-700">
-            <Link to="/" className="block text-white">Home</Link>
-          </li>
-          <li className="p-3 hover:bg-blue-700">
-            <Link to="/user" className="block text-white">Data Pembeli</Link>
+            <Link to="/pembeli" className="block text-white">Data Pembeli</Link>
           </li>
           <li className="p-3 hover:bg-blue-700">
             <Link to="/hewan" className="block text-white">Data Hewan</Link>

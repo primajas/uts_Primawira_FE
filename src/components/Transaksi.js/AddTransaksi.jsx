@@ -1,178 +1,161 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Dasboard from "../Dasboard";
 
 const AddTransaksi = () => {
-  const [tanggalPembelian, setTanggalPembelian] = useState("");
-  const [nominal, setNominal] = useState(0);
-  const [userId, setUserId] = useState("");
-  const [adminId, setAdminId] = useState("");
-  const [hewanId, setHewanId] = useState("");
-  const [pakanId, setPakanId] = useState("");
-  const [users, setUsers] = useState([]);
-  const [admins, setAdmins] = useState([]);
-  const [hewans, setHewans] = useState([]);
-  const [pakans, setPakans] = useState([]);
-  
+  const [hewan, setHewan] = useState([]);
+  const [pakan, setPakan] = useState([]);
+  const [pembeli, setPembeli] = useState([]);
+  const [selectedHewan, setSelectedHewan] = useState("");
+  const [selectedPakan, setSelectedPakan] = useState("");
+  const [hewanHarga, setHewanHarga] = useState(0);
+  const [pakanHarga, setPakanHarga] = useState(0);
+  const [tanggalPembelian, setTanggalPembelian] = useState(new Date().toISOString().substring(0, 10));
+  const [pembeliId, setPembeliId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUsers();
-    fetchAdmins();
-    fetchHewans();
-    fetchPakans();
+    getHewan();
+    getPakan();
+    getPembeli();
   }, []);
 
-  const fetchUsers = async () => {
+  const getHewan = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/user");
-      setUsers(response.data);
+      const response = await axios.get("http://localhost:3001/hewan");
+      setHewan(response.data);
     } catch (error) {
-      console.log("Error fetching users:", error);
+      console.error("Error fetching hewan:", error);
     }
   };
 
-  const fetchAdmins = async () => {
+  const getPakan = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/admin");
-      setAdmins(response.data);
+      const response = await axios.get("http://localhost:3001/pakan");
+      setPakan(response.data);
     } catch (error) {
-      console.log("Error fetching admins:", error);
+      console.error("Error fetching pakan:", error);
     }
   };
 
-  const fetchHewans = async () => {
+  const getPembeli = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/hewan"); 
-      setHewans(response.data);
+      const response = await axios.get("http://localhost:3001/pembeli");
+      setPembeli(response.data);
     } catch (error) {
-      console.log("Error fetching hewans:", error);
+      console.error("Error fetching pembeli:", error);
     }
   };
 
-  const fetchPakans = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/pakan"); 
-      setPakans(response.data);
-    } catch (error) {
-      console.log("Error fetching pakans:", error);
-    }
-  };
-
-  const saveTransaksi = async (e) => {
+  const handleAddTransaksi = async (e) => {
     e.preventDefault();
+
+    if (!pembeliId) {
+      alert("Please select a Pembeli.");
+      return;
+    }
+
+    if (!selectedHewan && !selectedPakan) {
+      alert("Please select at least one Hewan or Pakan.");
+      return;
+    }
+
     try {
-      await axios.post("http://localhost:3001/transaksi/create", {
+      const dataToSend = {
+        HewanId: selectedHewan ? parseInt(selectedHewan, 10) : null, 
+        PakanId: selectedPakan ? parseInt(selectedPakan, 10) : null, 
+        nominal: hewanHarga + pakanHarga,
         tanggalPembelian,
-        nominal,
-        UserId: userId,
-        AdminId: adminId,
-        HewanId: hewanId,
-        PakanId: pakanId,
-      });
-      navigate("/trans"); 
+        PembeliId: parseInt(pembeliId, 10), 
+      };
+
+      await axios.post("http://localhost:3001/transaksi/create", dataToSend);
+      navigate("/trans");
     } catch (error) {
-      console.log("Error adding transaksi:", error);
+      console.error("Error adding transaksi:", error);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-96">
-        <h2 className="text-2xl font-bold text-center mb-6">Add New Transaksi</h2>
-        <form onSubmit={saveTransaksi}>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Tanggal Pembelian</label>
-            <div className="control">
-              <input
-                type="date"
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={tanggalPembelian}
-                onChange={(e) => setTanggalPembelian(e.target.value)}
-                required
-              />
-            </div>
+    <div className="flex min-h-screen">
+      <Dasboard />
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Tambah Transaksi</h1>
+        <form onSubmit={handleAddTransaksi}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Pilih Pembeli</label>
+            <select
+              value={pembeliId}
+              onChange={(e) => setPembeliId(e.target.value)}
+              className="mt-1 block w-full p-2 border rounded-lg"
+              required
+            >
+              <option value="">-- Pilih Pembeli --</option>
+              {pembeli.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Nominal</label>
-            <div className="control">
-              <input
-                type="number"
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={nominal}
-                onChange={(e) => setNominal(e.target.value)}
-                placeholder="Enter nominal"
-                required
-              />
-            </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Tanggal Pembelian</label>
+            <input
+              type="date"
+              value={tanggalPembelian}
+              onChange={(e) => setTanggalPembelian(e.target.value)}
+              className="mt-1 block w-full p-2 border rounded-lg"
+              required
+            />
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">User ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                required
-              >
-                <option value="">Select User</option>
-                {users.map(user => (
-                  <option key={user.id} value={user.id}>{user.name}</option>
-                ))}
-              </select>
-            </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Pilih Hewan</label>
+            <select
+              value={selectedHewan}
+              onChange={(e) => {
+                setSelectedHewan(e.target.value);
+                const selected = hewan.find((h) => h.id.toString() === e.target.value);
+                setHewanHarga(selected ? selected.harga : 0);
+              }}
+              className="mt-1 block w-full p-2 border rounded-lg"
+            >
+              <option value="">-- Pilih Hewan --</option>
+              {hewan.map((h) => (
+                <option key={h.id} value={h.id}>
+                  {h.name} - Harga: {h.harga}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Admin ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={adminId}
-                onChange={(e) => setAdminId(e.target.value)}
-                required
-              >
-                <option value="">Select Admin</option>
-                {admins.map(admin => (
-                  <option key={admin.id} value={admin.id}>{admin.name}</option>
-                ))}
-              </select>
-            </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium">Pilih Pakan</label>
+            <select
+              value={selectedPakan}
+              onChange={(e) => {
+                setSelectedPakan(e.target.value);
+                const selected = pakan.find((p) => p.id.toString() === e.target.value);
+                setPakanHarga(selected ? selected.harga : 0);
+              }}
+              className="mt-1 block w-full p-2 border rounded-lg"
+            >
+              <option value="">-- Pilih Pakan --</option>
+              {pakan.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} - Harga: {p.harga}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Hewan ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={hewanId}
-                onChange={(e) => setHewanId(e.target.value)}
-                required
-              >
-                <option value="">Select Hewan</option>
-                {hewans.map(hewan => (
-                  <option key={hewan.id} value={hewan.id}>{hewan.name}</option>
-                ))}
-              </select>
-            </div>
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold">Nominal: Rp {hewanHarga + pakanHarga}</h2>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Pakan ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={pakanId}
-                onChange={(e) => setPakanId(e.target.value)}
-                required
-              >
-                <option value="">Select Pakan</option>
-                {pakans.map(pakan => (
-                  <option key={pakan.id} value={pakan.id}>{pakan.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="field">
-            <button type="submit" className="button is-success w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition duration-300">
-              Save
+          <div>
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
+            >
+              Tambah Transaksi
             </button>
           </div>
         </form>

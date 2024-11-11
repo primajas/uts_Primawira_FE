@@ -6,40 +6,37 @@ const EditTransaksi = () => {
   const { id } = useParams();
   const [tanggalPembelian, setTanggalPembelian] = useState("");
   const [nominal, setNominal] = useState(0);
-  const [userId, setUserId] = useState("");
-  const [adminId, setAdminId] = useState("");
-  const [hewanId, setHewanId] = useState("");
-  const [pakanId, setPakanId] = useState("");
+  const [pembeliId, setPembeliId] = useState("");
+  const [selectedHewan, setSelectedHewan] = useState("");
+  const [selectedPakan, setSelectedPakan] = useState("");
+  const [hewanHarga, setHewanHarga] = useState(0);
+  const [pakanHarga, setPakanHarga] = useState(0);
   const [users, setUsers] = useState([]);
-  const [admins, setAdmins] = useState([]);
   const [hewans, setHewans] = useState([]);
   const [pakans, setPakans] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUsers();
-    fetchAdmins();
-    fetchHewans();
-    fetchPakans();
-    fetchTransaksi();
+    const fetchData = async () => {
+      try {
+        await fetchPembelis();
+        await fetchHewans();
+        await fetchPakans();
+        await fetchTransaksi(); 
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, []);
+  
 
-  const fetchUsers = async () => {
+  const fetchPembelis = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/user");
+      const response = await axios.get("http://localhost:3001/pembeli");
       setUsers(response.data);
     } catch (error) {
-      console.log("Error fetching users:", error);
-    }
-  };
-
-  const fetchAdmins = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/admin");
-      setAdmins(response.data);
-    } catch (error) {
-      console.log("Error fetching admins:", error);
+      console.log("Error fetching pembeli:", error);
     }
   };
 
@@ -66,11 +63,15 @@ const EditTransaksi = () => {
       const response = await axios.get(`http://localhost:3001/transaksi/find/${id}`);
       const data = response.data;
       setTanggalPembelian(data.tanggalPembelian);
-      setNominal(data.nominal);
-      setUserId(data.UserId);
-      setAdminId(data.AdminId);
-      setHewanId(data.HewanId);
-      setPakanId(data.PakanId);
+      setPembeliId(data.PembeliId);
+      setSelectedHewan(data.HewanId);
+      setSelectedPakan(data.PakanId);
+
+      const hewan = hewans.find((h) => h.id === data.HewanId);
+      const pakan = pakans.find((p) => p.id === data.PakanId);
+      setHewanHarga(hewan ? hewan.harga : 0);
+      setPakanHarga(pakan ? pakan.harga : 0);
+      setNominal((hewan ? hewan.harga : 0) + (pakan ? pakan.harga : 0));
     } catch (error) {
       console.log("Error fetching transaksi:", error);
     }
@@ -81,11 +82,10 @@ const EditTransaksi = () => {
     try {
       await axios.put(`http://localhost:3001/transaksi/update/${id}`, {
         tanggalPembelian,
-        nominal,
-        UserId: userId,
-        AdminId: adminId,
-        HewanId: hewanId,
-        PakanId: pakanId,
+        nominal: hewanHarga + pakanHarga,
+        PembeliId: pembeliId,
+        HewanId: selectedHewan || null,
+        PakanId: selectedPakan || null,
       });
       navigate("/trans");
     } catch (error) {
@@ -98,100 +98,86 @@ const EditTransaksi = () => {
       <div className="bg-white shadow-lg rounded-lg p-8 w-96">
         <h2 className="text-2xl font-bold text-center mb-6">Edit Transaksi</h2>
         <form onSubmit={saveTransaksi}>
-          <div className="field mb-4">
+          <div className="mb-4">
+            <label className="label text-sm font-semibold">Pilih Pembeli</label>
+            <select
+              className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={pembeliId}
+              onChange={(e) => setPembeliId(e.target.value)}
+              required
+            >
+              <option value="">Select Pembeli</option>
+              {users.map((pembeli) => (
+                <option key={pembeli.id} value={pembeli.id}>
+                  {pembeli.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-4">
             <label className="label text-sm font-semibold">Tanggal Pembelian</label>
-            <div className="control">
-              <input
-                type="date"
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={tanggalPembelian}
-                onChange={(e) => setTanggalPembelian(e.target.value)}
-                required
-              />
-            </div>
+            <input
+              type="date"
+              className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={tanggalPembelian}
+              onChange={(e) => setTanggalPembelian(e.target.value)}
+              required
+            />
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Nominal</label>
-            <div className="control">
-              <input
-                type="number"
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={nominal}
-                onChange={(e) => setNominal(e.target.value)}
-                placeholder="Enter nominal"
-                required
-              />
-            </div>
+
+          <div className="mb-4">
+            <label className="label text-sm font-semibold">Pilih Hewan</label>
+            <select
+              className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={selectedHewan}
+              onChange={(e) => {
+                setSelectedHewan(e.target.value);
+                const hewan = hewans.find((h) => h.id.toString() === e.target.value);
+                setHewanHarga(hewan ? hewan.harga : 0);
+                setNominal((hewan ? hewan.harga : 0) + pakanHarga);
+              }}
+            >
+              <option value="">Select Hewan</option>
+              {hewans.map((hewan) => (
+                <option key={hewan.id} value={hewan.id}>
+                  {hewan.name} - Harga: {hewan.harga}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">User ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                required
-              >
-                <option value="">Select User</option>
-                {users.map(user => (
-                  <option key={user.id} value={user.id}>{user.name}</option>
-                ))}
-              </select>
-            </div>
+
+          <div className="mb-4">
+            <label className="label text-sm font-semibold">Pilih Pakan</label>
+            <select
+              className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={selectedPakan}
+              onChange={(e) => {
+                setSelectedPakan(e.target.value);
+                const pakan = pakans.find((p) => p.id.toString() === e.target.value);
+                setPakanHarga(pakan ? pakan.harga : 0);
+                setNominal(hewanHarga + (pakan ? pakan.harga : 0));
+              }}
+            >
+              <option value="">Select Pakan</option>
+              {pakans.map((pakan) => (
+                <option key={pakan.id} value={pakan.id}>
+                  {pakan.name} - Harga: {pakan.harga}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Admin ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={adminId}
-                onChange={(e) => setAdminId(e.target.value)}
-                required
-              >
-                <option value="">Select Admin</option>
-                {admins.map(admin => (
-                  <option key={admin.id} value={admin.id}>{admin.name}</option>
-                ))}
-              </select>
-            </div>
+
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold">Nominal: Rp {hewanHarga + pakanHarga}</h2>
           </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Hewan ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={hewanId}
-                onChange={(e) => setHewanId(e.target.value)}
-                required
-              >
-                <option value="">Select Hewan</option>
-                {hewans.map(hewan => (
-                  <option key={hewan.id} value={hewan.id}>{hewan.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Pakan ID</label>
-            <div className="control">
-              <select
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={pakanId}
-                onChange={(e) => setPakanId(e.target.value)}
-                required
-              >
-                <option value="">Select Pakan</option>
-                {pakans.map(pakan => (
-                  <option key={pakan.id} value={pakan.id}>{pakan.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="field">
-            <button type="submit" className="button is-success w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition duration-300">
-              Save
-            </button>
-          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-500 transition duration-300 w-full"
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>

@@ -6,13 +6,27 @@ const EditHewan = () => {
   const [name, setName] = useState("");
   const [jenis, setJenis] = useState("");
   const [harga, setHarga] = useState(0);
-  const [userId, setUserId] = useState("");
+  const [gambar, setGambar] = useState("");
+  const [stok, setStok] = useState(0); 
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     getHewanById();
   }, []);
+
+  const getHewanById = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/hewan/find/${id}`);
+      setName(response.data.name);
+      setJenis(response.data.jenis);
+      setHarga(response.data.harga);
+      setGambar(response.data.gambar); 
+      setStok(response.data.stok);
+    } catch (error) {
+      console.log("Error fetching hewan:", error);
+    }
+  };
 
   const updateHewan = async (e) => {
     e.preventDefault();
@@ -21,23 +35,12 @@ const EditHewan = () => {
         name,
         jenis,
         harga,
-        UserId: userId,
+        gambar,
+        stok,
       });
-      navigate("/hewan"); // Navigasi kembali setelah berhasil memperbarui
+      navigate("/hewan");
     } catch (error) {
       console.log("Error updating hewan:", error);
-    }
-  };
-
-  const getHewanById = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/hewan/find/${id}`);
-      setName(response.data.name);
-      setJenis(response.data.jenis);
-      setHarga(response.data.harga);
-      setUserId(response.data.UserId);
-    } catch (error) {
-      console.log("Error fetching hewan:", error);
     }
   };
 
@@ -54,7 +57,7 @@ const EditHewan = () => {
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter hewan name"
+                placeholder="Masukkan nama hewan"
                 required
               />
             </div>
@@ -67,7 +70,7 @@ const EditHewan = () => {
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={jenis}
                 onChange={(e) => setJenis(e.target.value)}
-                placeholder="Enter jenis hewan"
+                placeholder="Masukkan jenis hewan"
                 required
               />
             </div>
@@ -80,20 +83,33 @@ const EditHewan = () => {
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={harga}
                 onChange={(e) => setHarga(e.target.value)}
-                placeholder="Enter harga"
+                placeholder="Masukkan harga"
                 required
               />
             </div>
           </div>
           <div className="field mb-4">
-            <label className="label">User ID</label>
+            <label className="label">Gambar URL</label>
             <div className="control">
               <input
                 type="text"
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                placeholder="Enter User ID"
+                value={gambar}
+                onChange={(e) => setGambar(e.target.value)}
+                placeholder="Masukkan URL gambar"
+                required
+              />
+            </div>
+          </div>
+          <div className="field mb-4">
+            <label className="label">Stok</label>
+            <div className="control">
+              <input
+                type="number"
+                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={stok}
+                onChange={(e) => setStok(e.target.value)}
+                placeholder="Masukkan stok"
                 required
               />
             </div>

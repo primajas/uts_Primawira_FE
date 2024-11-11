@@ -12,6 +12,7 @@ import EditTransaksi from "./components/Transaksi.js/EditTransaksi";
 import AddPembeli from "./components/User/AddPembeli";
 import PembeliList from "./components/User/PembeliList";
 import EditPembeli from "./components/User/EditPembeli";
+import Login from "./components/Login";
 // import EditUser from "./components/User/EditUser";
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
     <BrowserRouter basename="/uts_Primawira_FE/">
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="/login" element={<Login/>}/>
         <Route path="/pembeli" element={<PembeliList/>}/>
         <Route path="/pembeli/add" element={<AddPembeli/>}/>
         <Route path="/pembeli/edit/:id" element={<EditPembeli/>}/>

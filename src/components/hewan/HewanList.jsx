@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Total from "./Total";
 import Dasboard from "../Dasboard";
 
 const HewanList = () => {
@@ -19,7 +18,7 @@ const HewanList = () => {
   const deleteHewan = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/hewan/delete/${id}`);
-      getHewan(); 
+      getHewan();
     } catch (error) {
       console.log(error);
     }
@@ -40,10 +39,11 @@ const HewanList = () => {
             <thead className="bg-gray-100">
               <tr>
                 <th className="px-4 py-2">No</th>
-                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Gambar</th>
+                <th className="px-4 py-2">Nama</th>
                 <th className="px-4 py-2">Jenis</th>
                 <th className="px-4 py-2">Harga</th>
-                <th className="px-4 py-2">UserId</th>
+                <th className="px-4 py-2">Stok</th>
                 <th className="px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -51,10 +51,13 @@ const HewanList = () => {
               {hewan.map((item, index) => (
                 <tr key={item.id} className="border-b">
                   <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">
+                    <img src={item.gambar} alt={item.name} className="w-30 h-20 object-cover rounded" />
+                  </td>
                   <td className="px-4 py-2">{item.name}</td>
                   <td className="px-4 py-2">{item.jenis}</td>
                   <td className="px-4 py-2">{item.harga}</td>
-                  <td className="px-4 py-2">{item.UserId}</td>
+                  <td className="px-4 py-2">{item.stok}</td>
                   <td className="px-4 py-2">
                     <div className="flex space-x-2">
                       <Link
@@ -76,7 +79,6 @@ const HewanList = () => {
             </tbody>
           </table>
         </div>
-        <Total />
       </div>
     </div>
   );

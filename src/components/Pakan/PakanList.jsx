@@ -28,7 +28,6 @@ const PakanList = () => {
     }
   };
 
-  // Menghitung total harga
   const totalHarga = pakan.reduce((total, item) => total + item.harga, 0);
 
   return (
@@ -41,15 +40,17 @@ const PakanList = () => {
             Add New
           </Link>
         </div>
+
         <div className="overflow-x-auto">
           <table className="table-auto w-full text-left whitespace-no-wrap bg-white shadow-lg rounded-lg overflow-hidden">
             <thead className="bg-gray-100">
               <tr>
                 <th className="px-4 py-2">No</th>
+                <th className="px-4 py-2">Gambar</th>
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Jenis Pakan</th>
                 <th className="px-4 py-2">Harga</th>
-                <th className="px-4 py-2">UserId</th>
+                <th className="px-4 py-2">Stok</th>
                 <th className="px-4 py-2">Actions</th>
               </tr>
             </thead>
@@ -57,10 +58,13 @@ const PakanList = () => {
               {pakan.map((item, index) => (
                 <tr key={item.id} className="border-b">
                   <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">
+                    <img src={item.gambar} alt={item.name} className="w-30 h-24 object-cover rounded-lg" />
+                  </td>
                   <td className="px-4 py-2">{item.name}</td>
                   <td className="px-4 py-2">{item.jenisPakan}</td>
                   <td className="px-4 py-2">{item.harga}</td>
-                  <td className="px-4 py-2">{item.UserId}</td> 
+                  <td className="px-4 py-2">{item.stok}</td>
                   <td className="px-4 py-2">
                     <div className="flex space-x-2">
                       <Link
@@ -81,9 +85,6 @@ const PakanList = () => {
               ))}
             </tbody>
           </table>
-        </div>
-        <div className="mt-4">
-          <h2 className="text-xl font-bold">Total Harga: {totalHarga}</h2>
         </div>
       </div>
     </div>
