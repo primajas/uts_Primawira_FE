@@ -1,8 +1,14 @@
+![Screenshot 2025-02-13 191019](https://github.com/user-attachments/assets/75baebf9-7e3f-4fc2-a43d-b50f67b41adc)
+![landingpage](https://github.com/user-attachments/assets/6e3661cb-b23e-4138-9774-d70f269cfdda)
+![lok](https://github.com/user-attachments/assets/f56d6fa8-8f73-40db-a5d4-2ec4d6cbba3f)
+
 #   1.User/Pembeli (Tambah, Edit, Hapus Pengguna)
 ### a. Tambah Pengguna
+
 - Pengguna baru bisa mendaftar (sign up) dengan mengisi data seperti nama, email, password, dan alamat.
 - Backend akan memvalidasi data, lalu membuat record baru di tabel User dengan Sequelize.
 - Proses ini menyimpan data pengguna ke database dan mereturn data pengguna baru yang telah disimpan.
+
 ### b. Edit Pengguna
 - Pengguna dapat mengedit data mereka (misalnya, mengganti nama atau alamat).
 - Prosesnya adalah mengambil data pengguna yang sudah ada, mengubah data yang diinginkan, lalu mengupdate record di tabel User.
