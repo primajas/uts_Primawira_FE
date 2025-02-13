@@ -6,8 +6,7 @@ const EditHewan = () => {
   const [name, setName] = useState("");
   const [jenis, setJenis] = useState("");
   const [harga, setHarga] = useState(0);
-  const [gambar, setGambar] = useState("");
-  const [stok, setStok] = useState(0); 
+  const [img, setImg] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -21,8 +20,7 @@ const EditHewan = () => {
       setName(response.data.name);
       setJenis(response.data.jenis);
       setHarga(response.data.harga);
-      setGambar(response.data.gambar); 
-      setStok(response.data.stok);
+      setImg(response.data.img);
     } catch (error) {
       console.log("Error fetching hewan:", error);
     }
@@ -35,8 +33,7 @@ const EditHewan = () => {
         name,
         jenis,
         harga,
-        gambar,
-        stok,
+        img,
       });
       navigate("/hewan");
     } catch (error) {
@@ -94,22 +91,9 @@ const EditHewan = () => {
               <input
                 type="text"
                 className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={gambar}
-                onChange={(e) => setGambar(e.target.value)}
+                value={img}
+                onChange={(e) => setImg(e.target.value)}
                 placeholder="Masukkan URL gambar"
-                required
-              />
-            </div>
-          </div>
-          <div className="field mb-4">
-            <label className="label">Stok</label>
-            <div className="control">
-              <input
-                type="number"
-                className="input border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={stok}
-                onChange={(e) => setStok(e.target.value)}
-                placeholder="Masukkan stok"
                 required
               />
             </div>

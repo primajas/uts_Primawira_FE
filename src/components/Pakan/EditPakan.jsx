@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const EditPakan = () => {
   const [name, setName] = useState("");
-  const [jenisPakan, setJenisPakan] = useState("");
   const [harga, setHarga] = useState(0);
   const [stok, setStok] = useState(0);
   const [gambar, setGambar] = useState("");
@@ -18,9 +17,8 @@ const EditPakan = () => {
   const getPakanById = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/pakan/find/${id}`);
-      const { name, jenisPakan, harga, stok, gambar } = response.data;
+      const { name, harga, stok, gambar } = response.data;
       setName(name);
-      setJenisPakan(jenisPakan);
       setHarga(harga);
       setStok(stok);
       setGambar(gambar);
@@ -34,7 +32,6 @@ const EditPakan = () => {
     try {
       await axios.put(`http://localhost:3001/pakan/update/${id}`, {
         name,
-        jenisPakan,
         harga,
         stok,
         gambar,
@@ -58,17 +55,6 @@ const EditPakan = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Masukkan nama pakan"
-              required
-            />
-          </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Jenis Pakan</label>
-            <input
-              type="text"
-              className="border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={jenisPakan}
-              onChange={(e) => setJenisPakan(e.target.value)}
-              placeholder="Masukkan jenis pakan"
               required
             />
           </div>

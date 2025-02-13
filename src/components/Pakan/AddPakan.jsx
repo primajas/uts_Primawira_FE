@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddPakan = () => {
   const [name, setName] = useState("");
-  const [jenisPakan, setJenisPakan] = useState("");
+  // const [jenisPakan, setJenisPakan] = useState("");
   const [harga, setHarga] = useState(0);
   const [stok, setStok] = useState(0);
   const [gambar, setGambar] = useState("");
@@ -15,7 +15,7 @@ const AddPakan = () => {
     try {
       await axios.post("http://localhost:3001/pakan/create", {
         name,
-        jenisPakan,
+        // jenisPakan,
         harga,
         stok,
         gambar,
@@ -39,17 +39,6 @@ const AddPakan = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Masukkan nama pakan"
-              required
-            />
-          </div>
-          <div className="field mb-4">
-            <label className="label text-sm font-semibold">Jenis Pakan</label>
-            <input
-              type="text"
-              className="border rounded-lg p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={jenisPakan}
-              onChange={(e) => setJenisPakan(e.target.value)}
-              placeholder="Masukkan jenis pakan"
               required
             />
           </div>

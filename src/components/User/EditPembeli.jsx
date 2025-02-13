@@ -19,7 +19,7 @@ const EditPembeli = () => {
         name,
         gender,
       });
-      navigate("/pembeli"); // Navigate back after successful update
+      navigate("/pembeli"); 
     } catch (error) {
       console.log("Error updating pembeli:", error);
     }

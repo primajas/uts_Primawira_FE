@@ -1,167 +1,78 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import Dasboard from "../Dasboard";
 
-const AddTransaksi = () => {
-  const [hewan, setHewan] = useState([]);
-  const [pakan, setPakan] = useState([]);
-  const [pembeli, setPembeli] = useState([]);
-  const [selectedHewan, setSelectedHewan] = useState("");
-  const [selectedPakan, setSelectedPakan] = useState("");
-  const [hewanHarga, setHewanHarga] = useState(0);
-  const [pakanHarga, setPakanHarga] = useState(0);
-  const [tanggalPembelian, setTanggalPembelian] = useState(new Date().toISOString().substring(0, 10));
-  const [pembeliId, setPembeliId] = useState("");
-  const navigate = useNavigate();
+export default function Pembayaran() {
+    const [pembeli, setPembeli] = useState([]);
+    const [hewan, setHewan] = useState([]);
+    const [pakan, setPakan] = useState([]);
+    const [selectedHewan, setSelectedHewan] = useState(null);
+    const [selectedPakan, setSelectedPakan] = useState(null);
+    const [alamat, setAlamat] = useState("");
+    const [totalHarga, setTotalHarga] = useState(0);
 
-  useEffect(() => {
-    getHewan();
-    getPakan();
-    getPembeli();
-  }, []);
+    useEffect(() => {
+        getPembeli();
+        getHewan();
+        getPakan();
+    }, []);
 
-  const getHewan = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/hewan");
-      setHewan(response.data);
-    } catch (error) {
-      console.error("Error fetching hewan:", error);
-    }
-  };
+    const getPembeli = async () => {
+        try {
+            const response = await axios.get("/api/pembeli");
+            setPembeli(response.data);
+        } catch (error) {
+            console.error("Error fetching pembeli:", error);
+        }
+    };
 
-  const getPakan = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/pakan");
-      setPakan(response.data);
-    } catch (error) {
-      console.error("Error fetching pakan:", error);
-    }
-  };
+    const getHewan = async () => {
+        try {
+            const response = await axios.get("/api/hewan");
+            setHewan(response.data);
+        } catch (error) {
+            console.error("Error fetching hewan:", error);
+        }
+    };
 
-  const getPembeli = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/pembeli");
-      setPembeli(response.data);
-    } catch (error) {
-      console.error("Error fetching pembeli:", error);
-    }
-  };
+    const getPakan = async () => {
+        try {
+            const response = await axios.get("/api/pakan");
+            setPakan(response.data);
+        } catch (error) {
+            console.error("Error fetching pakan:", error);
+        }
+    };
 
-  const handleAddTransaksi = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post("/api/transaksi", {
+                HewanId: selectedHewan,
+                PakanId: selectedPakan,
+                total_harga: totalHarga,
+                alamat: alamat,
+                status: "pending",
+            });
+            console.log("Transaksi berhasil:", response.data);
+        } catch (error) {
+            console.error("Error creating transaksi:", error);
+        }
+    };
 
-    if (!pembeliId) {
-      alert("Please select a Pembeli.");
-      return;
-    }
-
-    if (!selectedHewan && !selectedPakan) {
-      alert("Please select at least one Hewan or Pakan.");
-      return;
-    }
-
-    try {
-      const dataToSend = {
-        HewanId: selectedHewan ? parseInt(selectedHewan, 10) : null, 
-        PakanId: selectedPakan ? parseInt(selectedPakan, 10) : null, 
-        nominal: hewanHarga + pakanHarga,
-        tanggalPembelian,
-        PembeliId: parseInt(pembeliId, 10), 
-      };
-
-      await axios.post("http://localhost:3001/transaksi/create", dataToSend);
-      navigate("/trans");
-    } catch (error) {
-      console.error("Error adding transaksi:", error);
-    }
-  };
-
-  return (
-    <div className="flex min-h-screen">
-      <Dasboard />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Tambah Transaksi</h1>
-        <form onSubmit={handleAddTransaksi}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Pilih Pembeli</label>
-            <select
-              value={pembeliId}
-              onChange={(e) => setPembeliId(e.target.value)}
-              className="mt-1 block w-full p-2 border rounded-lg"
-              required
-            >
-              <option value="">-- Pilih Pembeli --</option>
-              {pembeli.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Tanggal Pembelian</label>
-            <input
-              type="date"
-              value={tanggalPembelian}
-              onChange={(e) => setTanggalPembelian(e.target.value)}
-              className="mt-1 block w-full p-2 border rounded-lg"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Pilih Hewan</label>
-            <select
-              value={selectedHewan}
-              onChange={(e) => {
-                setSelectedHewan(e.target.value);
-                const selected = hewan.find((h) => h.id.toString() === e.target.value);
-                setHewanHarga(selected ? selected.harga : 0);
-              }}
-              className="mt-1 block w-full p-2 border rounded-lg"
-            >
-              <option value="">-- Pilih Hewan --</option>
-              {hewan.map((h) => (
-                <option key={h.id} value={h.id}>
-                  {h.name} - Harga: {h.harga}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Pilih Pakan</label>
-            <select
-              value={selectedPakan}
-              onChange={(e) => {
-                setSelectedPakan(e.target.value);
-                const selected = pakan.find((p) => p.id.toString() === e.target.value);
-                setPakanHarga(selected ? selected.harga : 0);
-              }}
-              className="mt-1 block w-full p-2 border rounded-lg"
-            >
-              <option value="">-- Pilih Pakan --</option>
-              {pakan.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} - Harga: {p.harga}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">Nominal: Rp {hewanHarga + pakanHarga}</h2>
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500"
-            >
-              Tambah Transaksi
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-export default AddTransaksi;
+    return (
+        <div className="p-6">
+            <h1 className="text-2xl font-bold text-orange-600 mb-4">Pembayaran</h1>
+            <form onSubmit={handleSubmit} className="bg-orange-100 p-4 rounded-lg">
+                <label className="block mb-2">Alamat:</label>
+                <input 
+                    type="text" 
+                    value={alamat} 
+                    onChange={(e) => setAlamat(e.target.value)}
+                    className="border p-2 rounded w-full mb-4"
+                    required
+                />
+                <button type="submit" className="bg-orange-500 text-white p-2 rounded">Bayar</button>
+            </form>
+        </div>
+    );
+}
