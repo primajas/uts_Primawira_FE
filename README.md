@@ -1,5 +1,8 @@
-![Screenshot 2025-02-13 191019](https://github.com/user-attachments/assets/75baebf9-7e3f-4fc2-a43d-b50f67b41adc)
+##landing page awal
 ![landingpage](https://github.com/user-attachments/assets/6e3661cb-b23e-4138-9774-d70f269cfdda)
+##contoh dashboard admin
+![Screenshot 2025-02-13 191019](https://github.com/user-attachments/assets/75baebf9-7e3f-4fc2-a43d-b50f67b41adc)
+## lokasi
 ![lok](https://github.com/user-attachments/assets/f56d6fa8-8f73-40db-a5d4-2ec4d6cbba3f)
 
 #   1.User/Pembeli (Tambah, Edit, Hapus Pengguna)
