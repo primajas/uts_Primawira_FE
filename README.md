@@ -1,10 +1,11 @@
 
-
 #   1.User/Pembeli (Tambah, Edit, Hapus Pengguna)
 ### a. Tambah Pengguna
+
 - Pengguna baru bisa mendaftar (sign up) dengan mengisi data seperti nama, email, password, dan alamat.
 - Backend akan memvalidasi data, lalu membuat record baru di tabel User dengan Sequelize.
 - Proses ini menyimpan data pengguna ke database dan mereturn data pengguna baru yang telah disimpan.
+
 ### b. Edit Pengguna
 - Pengguna dapat mengedit data mereka (misalnya, mengganti nama atau alamat).
 - Prosesnya adalah mengambil data pengguna yang sudah ada, mengubah data yang diinginkan, lalu mengupdate record di tabel User.
@@ -50,3 +51,12 @@
 - Record transaksi dihapus dari tabel Transaksi, dan penghapusan bisa memengaruhi record hewan yang terkait.
 ## Kesimpulan
 ### Setiap bagian dari sistem ini memanfaatkan Sequelize ORM untuk menangani operasi CRUD (Create, Read, Update, Delete) dengan basis data relasional. Model-model pengguna, hewan, pakan, dan transaksi saling berhubungan, sehingga memungkinkan integrasi data yang mulus antara pengguna, barang yang dibeli, dan catatan transaksi.
+<<<<<<< HEAD
+=======
+
+
+
+https://images.bisnis.com/posts/2023/03/12/1636532/3._kucing_anggora__ciri,_jenis,_cara_merawat,_dan_harganya_-_daily_paws.jpg
+
+https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/MTA-72896052/excel_pakan_kucing_-_excel_4_kg_bentuk_ikan_makanan_kucing_anggora_persia_makanan_kucing_higienis_makanan_kucing_original_full01_021gcnr.jpg
+>>>>>>> 2cfd04b5168281b22a4ae17302887bc1d1479abc
