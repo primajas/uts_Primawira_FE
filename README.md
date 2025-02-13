@@ -1,3 +1,4 @@
+# contoh landing page ada di assets
 
 #   1.User/Pembeli (Tambah, Edit, Hapus Pengguna)
 ### a. Tambah Pengguna
